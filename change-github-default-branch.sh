@@ -23,7 +23,7 @@ LATEST_SHA="$(
 		--location \
 		--output - \
 		"https://api.github.com/repos/$REPO/git/refs/heads" |
-		python -c 'import sys, json; print json.load(sys.stdin)[0]["object"]["sha"]'
+		python -c 'import sys, json; print(json.load(sys.stdin)[0]["object"]["sha"])'
 )"
 curl \
 	--silent \
