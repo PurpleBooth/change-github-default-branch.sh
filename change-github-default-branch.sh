@@ -30,7 +30,7 @@ curl \
 	-X POST \
 	--header "Authorization: token $GITHUB_TOKEN" \
 	--header "Content-Type: application/json" \
-	-d "{ \"ref\": \"refs/heads/main\", \"sha\": \"$LATEST_SHA\" }" \
+	-d "{ \"ref\": \"refs/heads/$DEFAULT_BRANCH_NAME\", \"sha\": \"$LATEST_SHA\" }" \
 	"https://api.github.com/repos/$REPO/git/refs"
 
 curl \
