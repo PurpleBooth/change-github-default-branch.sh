@@ -4,7 +4,7 @@
 $ curl --silent --location --output - \
     https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | \
     bash -s --
-USAGE: bash -t GITHUB_TOKEN -d DEFAULT_BRANCH_NAME USER/REPO
+USAGE: curl --silent --location --output - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s -- [-t GITHUB_TOKEN] [-d DEFAULT_BRANCH_NAME] USER/REPO
 
 OPTIONS
   -t          Default: GITHUB_TOKEN environment variable     The GitHub token to use
@@ -36,8 +36,8 @@ are based from, incase something breaks.
 
 ## Dependencies
 
-* Curl
-* Python2 or Python3
+  - Curl
+  - Python2 or Python3
 
 ## Thanks
 
