@@ -13,6 +13,20 @@ ARGS
 You can create a GitHub token (it needs at least repo:public_repo, or repo on private repositores) from https://github.com/settings/tokens/new
 ```
 
+A more full examle:
+
+``` shell
+curl --silent -Lo - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s -- -t YOURGITHUBTOKENAAAAAA -d primary example/repo
+```
+
+Alternatively, to avoid curling to bash you can run
+
+``` shell
+curl -LO https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh
+chmod +x change-github-default-branch.sh
+./change-github-default-branch.sh -t YOURGITHUBTOKENAAAAAA -d primary example/repo
+```
+
 Does not delete the old default branch, or change where pull requests
 are based from, incase something breaks.
 
