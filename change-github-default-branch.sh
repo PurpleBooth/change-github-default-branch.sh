@@ -3,7 +3,13 @@
 set -euo pipefail
 
 print_help() {
-	echo "USAGE: $0 -t GITHUB_TOKEN -d DEFAULT_BRANCH_NAME USER/REPO" 1>&2
+	BINARY_NAME="curl --silent --location --output - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s --"
+
+	if [ "$0" != "bash" ]; then
+		BINARY_NAME="$0"
+	fi
+
+	echo "USAGE: $BINARY_NAME [-t GITHUB_TOKEN] [-d DEFAULT_BRANCH_NAME] USER/REPO" 1>&2
 	echo
 	echo "OPTIONS"
 	echo '  -t          Default: GITHUB_TOKEN environment variable     The GitHub token to use'
