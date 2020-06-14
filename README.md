@@ -1,7 +1,9 @@
 # change-github-default-branch.sh
 
 ``` shell
-$ curl --silent -Lo - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s --
+$ curl --silent --location --output - \
+    https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | \
+    bash -s --
 USAGE: bash -t GITHUB_TOKEN -d DEFAULT_BRANCH_NAME USER/REPO
 
 OPTIONS
@@ -16,7 +18,9 @@ You can create a GitHub token (it needs at least repo:public_repo, or repo on pr
 A more full examle:
 
 ``` shell
-curl --silent -Lo - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s -- -t YOURGITHUBTOKENAAAAAA -d primary example/repo
+curl --silent --location --output - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | \
+    bash -s -- \
+    -t YOURGITHUBTOKENAAAAAA -d primary example/repo
 ```
 
 Alternatively, to avoid curling to bash you can run
