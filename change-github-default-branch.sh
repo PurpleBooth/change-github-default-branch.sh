@@ -14,6 +14,14 @@ fi
 GITHUB_TOKEN="$1"
 REPO="$2"
 DEFAULT_BRANCH_NAME="${3:-main}"
+CURRENT_DEFAULT_BRANCH="$(
+	curl \
+		--silent \
+		--header "Authorization: token $GITHUB_TOKEN" \
+		--header "Content-Type: application/json" \
+		"https://api.github.com/repos/$REPO" |
+		python -c 'import sys, json; print(json.load(sys.stdin)["default_branch"])'
+)"
 
 LATEST_SHA="$(
 	curl \
@@ -22,8 +30,8 @@ LATEST_SHA="$(
 		--header "Authorization: token $GITHUB_TOKEN" \
 		--location \
 		--output - \
-		"https://api.github.com/repos/$REPO/git/refs/heads" |
-		python -c 'import sys, json; print(json.load(sys.stdin)[0]["object"]["sha"])'
+		"https://api.github.com/repos/$REPO/git/refs/heads/$CURRENT_DEFAULT_BRANCH" |
+		python -c 'import sys, json; print(json.load(sys.stdin)["object"]["sha"])'
 )"
 curl \
 	--silent \
