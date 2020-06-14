@@ -3,7 +3,7 @@
 set -euo pipefail
 
 if [ $# -ne 3 ] && [ $# -ne 2 ] && [ -z "$GITHUB_TOKEN" ] && [ $# -ne 1 ]; then
-	echo "USAGE: $0 [pat_token] user/repo [new_default]" 1>&2
+	echo "USAGE: $0 user/repo [pat_token] [new_default]" 1>&2
 	echo
 	printf "pat_token\tA GitHub personal access with at least repo:public_repo, or repo on private repositores https://github.com/settings/tokens/new\n"
 	printf "user/repo\tA github repository, for example purplebooth/readable-name-generator\n"
@@ -11,12 +11,10 @@ if [ $# -ne 3 ] && [ $# -ne 2 ] && [ -z "$GITHUB_TOKEN" ] && [ $# -ne 1 ]; then
 	exit 1
 fi
 
-if [ -z "$GITHUB_TOKEN" ]; then
-	GITHUB_TOKEN="$1"
-	REPO="$2"
-else
-	REPO="$1"
+if [ -z "$GITHUB_TOKEN" ] && [ $# -ne 2 ]; then
+	GITHUB_TOKEN="$2"
 fi
+REPO="$1"
 
 DEFAULT_BRANCH_NAME="${3:-main}"
 CURRENT_DEFAULT_BRANCH="$(
