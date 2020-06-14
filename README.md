@@ -34,6 +34,11 @@ chmod +x change-github-default-branch.sh
 Does not delete the old default branch, or change where pull requests
 are based from, incase something breaks.
 
+## Dependencies
+
+* Curl
+* Python2 or Python3
+
 ## Thanks
 
   - [mfcrocker](https://github.com/mfcrocker) for ubuntu fixes.
