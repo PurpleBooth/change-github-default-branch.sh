@@ -1,0 +1,74 @@
+"on":
+  push:
+    branches:
+      - "*"
+  pull_request: null
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: ludeeus/action-shellcheck@0.2.1
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        run: |
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+            -d "{\"name\": \"$REPO_NAME\", \"private\": false}" \
+          https://api.github.com/user/repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+          REPO_NAME: ${{ github.actor }}-${{ github.sha }}
+      - uses: actions/checkout@v2
+        with:
+          path: source
+      - shell: bash
+        run: |
+          git init input
+          cd input
+          git remote add origin "https://PurpleBooth-test-kaeg2Zai1shem1Queeyi:$GITHUB_TOKEN@github.com/$REPOSITORY.git"
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global user.name "$GITHUB_ACTOR"
+          echo "Hello World!" >file
+          git add .
+          git commit -m "Testing"
+          git push --set-upstream origin master
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+          REPOSITORY: PurpleBooth-test-kaeg2Zai1shem1Queeyi/${{ github.actor }}-${{ github.sha }}
+      - shell: bash
+        run: ./source/change-github-default-branch.sh "$REPO"
+        env:
+          REPO: PurpleBooth-test-kaeg2Zai1shem1Queeyi/${{ github.actor }}-${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+      - shell: bash
+        run: |
+          CURRENT_DEFAULT_BRANCH="$(curl \
+            --silent \
+            --header "Authorization: token $GITHUB_TOKEN" \
+            --header "Content-Type: application/json" \
+            "https://api.github.com/repos/$REPO" |
+            python -c 'import sys, json; print(json.load(sys.stdin)["default_branch"])')"
+
+          if "$CURRENT_DEFAULT_BRANCH" != "main"; then
+            echo "Expected default branch to be main, instead it was $CURRENT_DEFAULT_BRANCH"
+            exit 1
+          fi
+        env:
+          REPO: PurpleBooth-test-kaeg2Zai1shem1Queeyi/${{ github.actor }}-${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+      - shell: bash
+        run: |
+          curl \
+          	-X DELETE \
+          	--silent \
+          	--header "Content-Type: application/json" \
+          	--header "Authorization: token $GITHUB_TOKEN" \
+          	"https://api.github.com/repos/$REPO"
+        env:
+          REPO: PurpleBooth-test-kaeg2Zai1shem1Queeyi/${{ github.actor }}-${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.TEST_GITHUB_TOKEN }}
+        if: always()
