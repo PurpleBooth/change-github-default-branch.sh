@@ -12,3 +12,5 @@ are based from, incase something breaks.
   - [mfcrocker](https://github.com/mfcrocker) for ubuntu fixes.
   - [greg-1-anderson](https://github.com/greg-1-anderson) for spotting a
     couple of bugs
+  - [Lewiscowles1986](https://github.com/Lewiscowles1986) for letting
+    you change the default branch if your branch isn't the one git sets
