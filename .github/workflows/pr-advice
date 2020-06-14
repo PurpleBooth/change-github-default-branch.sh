@@ -1,0 +1,14 @@
+name: example
+on:
+  - pull_request
+jobs:
+  sh-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: luizm/action-sh-checker@v0.1.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          sh_checker_comment: true
+          sh_checker_exclude: ".terraform ^dir/example.sh"
