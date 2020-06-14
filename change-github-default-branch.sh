@@ -2,21 +2,36 @@
 
 set -euo pipefail
 
-if [ $# -ne 3 ] && [ $# -ne 2 ] && [ -z "$GITHUB_TOKEN" ] && [ $# -ne 1 ]; then
-	echo "USAGE: $0 user/repo [pat_token] [new_default]" 1>&2
+print_help() {
+	echo "USAGE: $0 -t GITHUB_TOKEN -d DEFAULT_BRANCH_NAME USER/REPO" 1>&2
 	echo
-	printf "pat_token\tA GitHub personal access with at least repo:public_repo, or repo on private repositores https://github.com/settings/tokens/new\n"
-	printf "user/repo\tA github repository, for example purplebooth/readable-name-generator\n"
-	printf "new_default\tName of the new default branch, default: main\n"
+	echo "OPTIONS"
+	echo '  -t          Default: GITHUB_TOKEN environment variable     The GitHub token to use'
+	echo "  -d          Default: main                                  The new branch"
+
+	echo "ARGS"
+	echo "  USER/REPO   Required  A github repository, for example purplebooth/readable-name-generator"
+	echo
+	echo "You can create a GitHub token (it needs at least repo:public_repo, or repo on private repositores) from https://github.com/settings/tokens/new"
 	exit 1
+}
+
+DEFAULT_BRANCH_NAME="main"
+
+while getopts "t:d:" FLAG; do
+	case "$FLAG" in
+	t) GITHUB_TOKEN=$OPTARG ;;
+	d) DEFAULT_BRANCH_NAME=$OPTARG ;;
+	*) print_help ;;
+	esac
+done
+
+REPO="${*:OPTIND}"
+
+if [ -z "${REPO:-}" ] || [ -z "${DEFAULT_BRANCH_NAME:-}" ] || [ -z "${GITHUB_TOKEN:-}" ]; then
+	print_help
 fi
 
-if [ -z "$GITHUB_TOKEN" ] && [ $# -ge 2 ]; then
-	GITHUB_TOKEN="$2"
-fi
-REPO="$1"
-
-DEFAULT_BRANCH_NAME="${3:-main}"
 CURRENT_DEFAULT_BRANCH="$(
 	curl \
 		--silent \
