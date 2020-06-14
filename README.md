@@ -1,8 +1,17 @@
 # change-github-default-branch.sh
 
-Usage
+``` shell
+$ curl --silent -Lo - https://raw.githubusercontent.com/PurpleBooth/change-github-default-branch.sh/main/change-github-default-branch.sh | bash -s --
+USAGE: bash -t GITHUB_TOKEN -d DEFAULT_BRANCH_NAME USER/REPO
 
-    change-github-default-branch.sh "$GITHUB_TOKEN" PurpleBooth/homebrew-repo
+OPTIONS
+  -t          Default: GITHUB_TOKEN environment variable     The GitHub token to use
+  -d          Default: main                                  The new branch
+ARGS
+  USER/REPO   Required  A github repository, for example purplebooth/readable-name-generator
+
+You can create a GitHub token (it needs at least repo:public_repo, or repo on private repositores) from https://github.com/settings/tokens/new
+```
 
 Does not delete the old default branch, or change where pull requests
 are based from, incase something breaks.
