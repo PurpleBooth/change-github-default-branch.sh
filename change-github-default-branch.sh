@@ -11,7 +11,7 @@ if [ $# -ne 3 ] && [ $# -ne 2 ] && [ -z "$GITHUB_TOKEN" ] && [ $# -ne 1 ]; then
 	exit 1
 fi
 
-if [ -z "$GITHUB_TOKEN" ] && [ $# -ne 2 ]; then
+if [ -z "$GITHUB_TOKEN" ] && [ $# -ge 2 ]; then
 	GITHUB_TOKEN="$2"
 fi
 REPO="$1"
